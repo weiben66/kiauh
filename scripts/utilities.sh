@@ -716,3 +716,45 @@ function get_instance_folder_path() {
 
   echo "${folder_paths[@]}"
 }
+
+###
+# helper function that returns all available absolute directory paths
+# based on their instance name and specified target folder
+#
+# @param {string}: folder name - target instance folder name (e.g. config)
+#
+# => return an empty string if klipper is not installed
+# => return space-separated string of absolute directory paths
+#
+function create_step_folders() {
+  local dir="${HOME}/kiauh_steps/${1}/${2}"
+
+  if [[ -d "${dir}" ]]; then
+    rm -r "${dir}"
+  fi
+
+  if [[ ! -d "${dir}" ]]; then
+    status_msg "Creating folder '${dir}' ..."
+    mkdir -p "${dir}"
+    ok_msg "Folder '${dir}' created!"
+  fi
+}
+function get_step_folders() {
+  local dir="${HOME}/kiauh_steps/${1}/${2}"
+  local isdone="none"
+
+  if [[ -d "${dir}" ]]; then
+    isdone="done"
+  fi
+  
+  echo "${isdone}"
+}
+function remvoe_step_folders() {
+  local dir="${HOME}/kiauh_steps/${1}"
+
+  if [[ -d "${dir}" ]]; then
+    status_msg "remove folder '${dir}' ..."
+    rm -r "${dir}"
+    ok_msg "Folder '${dir}' removed!"
+  fi
+}

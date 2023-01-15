@@ -90,8 +90,28 @@ function kiauh_update_dialog() {
   done
 }
 
+
+
 check_euid
 init_logfile
 set_globals
-kiauh_update_dialog
+
+#step skip code1
+stepno="1"
+stepname="chk-kiauh"
+stepdone="$(get_step_folders "${stepname}" "${stepno}")"
+status_msg "${stepname} step ${stepno} finished: ${stepdone}"
+if [[ "${stepdone}" != "done" ]]; then
+  status_msg "${stepname} step ${stepno} runing"
+
+  kiauh_update_dialog
+
+else
+  status_msg "${stepname} step ${stepno} skiped"
+fi
+create_step_folders "${stepname}" "${stepno}"
+stepno="2"
+stepdone="$(get_step_folders "${stepname}" "${stepno}")"
+status_msg "${stepname} step ${stepno} finished: ${stepdone}"
+
 main_menu

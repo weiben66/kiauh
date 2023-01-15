@@ -63,8 +63,25 @@ function install_fluidd() {
 #    done
 #  fi
 
-  ### download fluidd
-  download_fluidd
+  #step skip code1
+  local stepno="1"
+  local stepname="ins-fluidd"
+  local stepdone="$(get_step_folders "${stepname}" "${stepno}")"
+  status_msg "${stepname} step ${stepno} finished: ${stepdone}"
+  if [[ "${stepdone}" != "done" ]]; then
+    status_msg "${stepname} step ${stepno} runing"
+
+    ### download fluidd
+    download_fluidd
+
+  else
+    status_msg "${stepname} step ${stepno} skiped"
+  fi
+  create_step_folders "${stepname}" "${stepno}"
+  stepno="2"
+  stepdone="$(get_step_folders "${stepname}" "${stepno}")"
+  status_msg "${stepname} step ${stepno} finished: ${stepdone}"
+
 
   ### ask user to install the recommended webinterface macros
   install_fluidd_macros

@@ -197,8 +197,26 @@ function run_klipper_setup() {
   ### checking dependencies
   dependency_check "${dep[@]}"
 
-  ### step 1: clone klipper
-  clone_klipper "${custom_repo}" "${custom_branch}"
+  #step skip code1
+  local stepno="1"
+  local stepname="ins-klipper"
+  local stepdone="$(get_step_folders "${stepname}" "${stepno}")"
+  status_msg "${stepname} step ${stepno} finished: ${stepdone}"
+  if [[ "${stepdone}" != "done" ]]; then
+    status_msg "${stepname} step ${stepno} runing"
+
+    ### step 1: clone klipper
+    clone_klipper "${custom_repo}" "${custom_branch}"
+
+  else
+    status_msg "${stepname} step ${stepno} skiped"
+  fi
+  create_step_folders "${stepname}" "${stepno}"
+  stepno="2"
+  stepdone="$(get_step_folders "${stepname}" "${stepno}")"
+  status_msg "${stepname} step ${stepno} finished: ${stepdone}"
+
+    
 
   ### step 2: install klipper dependencies and create python virtualenv
   install_klipper_packages "${python_version}"
@@ -222,7 +240,7 @@ function run_klipper_setup() {
 
   ### finalizing the setup with writing instance names to the kiauh.ini
   set_multi_instance_names
-
+  
   print_confirm "${confirm}" && return
 }
 
